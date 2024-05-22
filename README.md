@@ -24,4 +24,4 @@
 
 ## API
 Все эндпоинты API можно посмотреть в файле marketplace-openapi.yaml -> 
-[Swagger UI](https://petstore.swagger.io/?url=https://github.com/benyfox/easysale/marketplace-openapi.yaml) 
+[Swagger UI](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/benyfox/easysale/master/marketplace-openapi.yaml)
