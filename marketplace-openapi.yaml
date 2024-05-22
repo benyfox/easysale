@@ -1,0 +1,1968 @@
+openapi: "3.0.3"
+info:
+  title: "marketplace API"
+  description: "marketplace API"
+  version: "1.0.0"
+servers:
+  - url: "https://marketplace"
+paths:
+  /api/auth/signin:
+    post:
+      summary: "POST api/auth/signin"
+      operationId: "authenticateUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/JwtResponse"
+  /api/auth/signup:
+    post:
+      summary: "POST api/auth/signup"
+      operationId: "registerUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/auth/signup-admin:
+    post:
+      summary: "POST api/auth/signup-admin"
+      operationId: "adminSignUp"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/favourite:
+    get:
+      summary: "GET api/favourite"
+      operationId: "getPageable"
+      parameters:
+        - name: "username"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "5"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FavouriteListDto"
+    delete:
+      summary: "DELETE api/favourite"
+      operationId: "delete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavouriteListRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/favourite/objects:
+    post:
+      summary: "POST api/favourite/objects"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FavouriteList"
+  /api/favourite/strings:
+    post:
+      summary: "POST api/favourite/strings"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavouriteListRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /api/seller:
+    get:
+      summary: "GET api/seller"
+      operationId: "findById"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SellerDto"
+    put:
+      summary: "PUT api/seller"
+      operationId: "update"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Seller"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Seller"
+    post:
+      summary: "POST api/seller"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Seller"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Seller"
+    delete:
+      summary: "DELETE api/seller"
+      operationId: "delete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SellerRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/seller/all:
+    get:
+      summary: "GET api/seller/all"
+      operationId: "getPageable"
+      parameters:
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "5"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SellerDto"
+  /api/seller/company:
+    get:
+      summary: "GET api/seller/company"
+      operationId: "findByName"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SellerDto"
+  /api/seller/find:
+    get:
+      summary: "GET api/seller/find"
+      operationId: "findByNameContains"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "12"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SellerDto"
+  /api/seller/products:
+    get:
+      summary: "GET api/seller/products"
+      operationId: "findAllProducts"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ProductDto"
+  /api/product:
+    get:
+      summary: "GET api/product"
+      operationId: "getPageable"
+      parameters:
+        - name: "_start"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "_limit"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "5"
+        - name: "price_gt"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+            format: "float"
+            default: "0"
+        - name: "price_lt"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+            format: "float"
+            default: "5000000"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+    post:
+      summary: "POST api/product"
+      operationId: "create"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+    patch:
+      summary: "PATCH api/product"
+      operationId: "update"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+    delete:
+      summary: "DELETE api/product"
+      operationId: "delete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductDeleteRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/product/all:
+    get:
+      summary: "GET api/product/all"
+      operationId: "getAll"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ProductDto"
+  /api/product/brand:
+    get:
+      summary: "GET api/product/brand"
+      operationId: "getByBrandId"
+      parameters:
+        - name: "id_in"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "12"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+  /api/product/category/{slug}:
+    get:
+      summary: "GET api/product/category/{slug}"
+      operationId: "getByCategorySlug"
+      parameters:
+        - name: "slug"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "12"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+  /api/product/count:
+    get:
+      summary: "GET api/product/count"
+      operationId: "getCount"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int64"
+  /api/product/find:
+    get:
+      summary: "GET api/product/find"
+      operationId: "find"
+      parameters:
+        - name: "productName"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "companyName"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+  /api/product/list:
+    get:
+      summary: "GET api/product/list"
+      operationId: "getPageable"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "12"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+  /api/product/seller:
+    get:
+      summary: "GET api/product/seller"
+      operationId: "getByToken"
+      parameters:
+        - name: "_start"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "_limit"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "12"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+  /api/product/seller/{companyName}:
+    get:
+      summary: "GET api/product/seller/{companyName}"
+      operationId: "getBySeller"
+      parameters:
+        - name: "companyName"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "_start"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "_limit"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "12"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+  /api/product/{id}:
+    get:
+      summary: "GET api/product/{id}"
+      operationId: "getById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+  /api/category:
+    get:
+      summary: "GET api/category"
+      operationId: "getByCategoryType"
+      parameters:
+        - name: "type"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            enum:
+              - "PHONES_AND_GADGETS"
+              - "APPLIANCES"
+              - "TV_AUDIO_VIDEO"
+              - "COMPUTERS"
+              - "FURNITURE"
+              - "BEAUTY_HEALTH"
+              - "CHILDREN_PRODUCTS"
+              - "PHARMACY"
+              - "CONSTRUCTION_REPAIR"
+              - "SPORT"
+              - "TOURISM"
+              - "LEISURE_BOOKS"
+              - "AUTOMOTIVE_PRODUCTS"
+              - "DECORATION"
+              - "ACCESSORIES"
+              - "CLOTHES"
+              - "SHOES"
+              - "HOUSEHOLD_COTTAGE_GOODS"
+              - "PET_PRODUCTS"
+              - "GIFTS_GOODS_FOR_HOLIDAYS"
+              - "OFFICE_SUPPLIES"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CategoryDto"
+    put:
+      summary: "PUT api/category"
+      operationId: "update"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Category"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Category"
+    post:
+      summary: "POST api/category"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Category"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Category"
+    delete:
+      summary: "DELETE api/category"
+      operationId: "delete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Category"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/category/all:
+    get:
+      summary: "GET api/category/all"
+      operationId: "get"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CategoryDto"
+  /api/category/{slug}:
+    get:
+      summary: "GET api/category/{slug}"
+      operationId: "getBySlug"
+      parameters:
+        - name: "slug"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+  /api/statistic:
+    get:
+      summary: "GET api/statistic"
+      operationId: "get"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Statistic"
+  /sendmail:
+    get:
+      summary: "GET sendmail"
+      operationId: "sendmail"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/blacklist:
+    delete:
+      summary: "DELETE api/blacklist"
+      operationId: "delete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlackListRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/blacklist/count:
+    get:
+      summary: "GET api/blacklist/count"
+      operationId: "getCountOfSellerBlocked"
+      parameters:
+        - name: "seller"
+          in: "query"
+          required: true
+          schema:
+            $ref: "#/components/schemas/SellerRequest"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+  /api/blacklist/objects:
+    post:
+      summary: "POST api/blacklist/objects"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BlackList"
+  /api/blacklist/strings:
+    post:
+      summary: "POST api/blacklist/strings"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlackListRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /api/blacklist/user:
+    get:
+      summary: "GET api/blacklist/user"
+      operationId: "getPageable"
+      parameters:
+        - name: "username"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "5"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BlackListDto"
+    delete:
+      summary: "DELETE api/blacklist/user"
+      operationId: "deleteAllOfUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/user:
+    get:
+      summary: "GET api/user"
+      operationId: "getUserByUsername"
+      parameters:
+        - name: "username"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+    post:
+      summary: "POST api/user"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    patch:
+      summary: "PATCH api/user"
+      operationId: "update"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/User"
+    delete:
+      summary: "DELETE api/user"
+      operationId: "delete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/user/all:
+    get:
+      summary: "GET api/user/all"
+      operationId: "getPageable"
+      parameters:
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "5"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /static/products:
+    post:
+      summary: "POST static/products"
+      operationId: "uploadProductImage"
+      parameters:
+        - name: "file"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "binary"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /static/products/{filename}:
+    get:
+      summary: "GET static/products/{filename}"
+      operationId: "find"
+      parameters:
+        - name: "filename"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/collection:
+    get:
+      summary: "GET api/collection"
+      operationId: "getCollectionsBySlugs"
+      parameters:
+        - name: "slug_in"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CollectionDto"
+    put:
+      summary: "PUT api/collection"
+      operationId: "addCollectionProduct"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CollectionRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+    post:
+      summary: "POST api/collection"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CollectionRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CollectionDto"
+    patch:
+      summary: "PATCH api/collection"
+      operationId: "updateCollection"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CollectionRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CollectionDto"
+    delete:
+      summary: "DELETE api/collection"
+      operationId: "deleteCollection"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CollectionRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/collection/all:
+    get:
+      summary: "GET api/collection/all"
+      operationId: "getAll"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CollectionDto"
+  /api/collection/related_products/{id}:
+    get:
+      summary: "GET api/collection/related_products/{id}"
+      operationId: "getRelatedProductsCollection"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CollectionDto"
+  /api/brand:
+    get:
+      summary: "GET api/brand"
+      operationId: "getByQuery"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BrandsDto"
+    put:
+      summary: "PUT api/brand"
+      operationId: "update"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Brand"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Brand"
+    post:
+      summary: "POST api/brand"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Brand"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Brand"
+    delete:
+      summary: "DELETE api/brand"
+      operationId: "delete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Brand"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/brand/all:
+    get:
+      summary: "GET api/brand/all"
+      operationId: "get"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BrandsDto"
+  /api/brand/products:
+    get:
+      summary: "GET api/brand/products"
+      operationId: "getProductsByBrandsIds"
+      parameters:
+        - name: "id_in"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BrandsProductsDto"
+  /api/order:
+    get:
+      summary: "GET api/order"
+      operationId: "getPageable"
+      parameters:
+        - name: "_start"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "_limit"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "5"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OrderDto"
+    post:
+      summary: "POST api/order"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OrderDto"
+    patch:
+      summary: "PATCH api/order"
+      operationId: "update"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OrderDto"
+    delete:
+      summary: "DELETE api/order"
+      operationId: "delete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /api/order/all:
+    get:
+      summary: "GET api/order/all"
+      operationId: "getPageable"
+      parameters:
+        - name: "pageNumber"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "5"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OrderDto"
+  /api/assistant:
+    post:
+      summary: "POST api/assistant"
+      operationId: "chatStream"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssistantRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+components:
+  schemas:
+    LoginRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+    JwtResponse:
+      type: "object"
+      properties:
+        token:
+          type: "string"
+        type:
+          type: "string"
+        id:
+          type: "integer"
+          format: "int64"
+        username:
+          type: "string"
+        email:
+          type: "string"
+        roles:
+          type: "array"
+          items:
+            type: "string"
+    SignupRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        email:
+          type: "string"
+        role:
+          type: "array"
+          items:
+            type: "string"
+        password:
+          type: "string"
+    FavouriteListDto:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        productName:
+          type: "string"
+        companyName:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+    FavouriteListRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        productName:
+          type: "string"
+        companyName:
+          type: "string"
+    Role:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          enum:
+            - "ROLE_ADMIN"
+            - "ROLE_USER"
+            - "ROLE_MERCHANT"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    Seller:
+      type: "object"
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        companyName:
+          type: "string"
+        taxNumber:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    Category:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        slug:
+          type: "string"
+        description:
+          type: "string"
+        baseCategory:
+          type: "string"
+          enum:
+            - "PHONES_AND_GADGETS"
+            - "APPLIANCES"
+            - "TV_AUDIO_VIDEO"
+            - "COMPUTERS"
+            - "FURNITURE"
+            - "BEAUTY_HEALTH"
+            - "CHILDREN_PRODUCTS"
+            - "PHARMACY"
+            - "CONSTRUCTION_REPAIR"
+            - "SPORT"
+            - "TOURISM"
+            - "LEISURE_BOOKS"
+            - "AUTOMOTIVE_PRODUCTS"
+            - "DECORATION"
+            - "ACCESSORIES"
+            - "CLOTHES"
+            - "SHOES"
+            - "HOUSEHOLD_COTTAGE_GOODS"
+            - "PET_PRODUCTS"
+            - "GIFTS_GOODS_FOR_HOLIDAYS"
+            - "OFFICE_SUPPLIES"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    Brand:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        slug:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    Collection:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        slug:
+          type: "string"
+        description:
+          type: "string"
+        products:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Product"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    ProductThumbnail:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        url:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    ProductImage:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        url:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    Product:
+      type: "object"
+      properties:
+        seller:
+          $ref: "#/components/schemas/Seller"
+        name:
+          type: "string"
+        price:
+          type: "number"
+          format: "float"
+        salePrice:
+          type: "number"
+          format: "float"
+        shippingCost:
+          type: "number"
+          format: "float"
+        quantity:
+          type: "integer"
+          format: "int32"
+        description:
+          type: "string"
+        category:
+          $ref: "#/components/schemas/Category"
+        features:
+          type: "string"
+        sku:
+          type: "string"
+        brand:
+          $ref: "#/components/schemas/Brand"
+        collections:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Collection"
+        isAvailable:
+          type: "boolean"
+        thumbnail:
+          $ref: "#/components/schemas/ProductThumbnail"
+        imageList:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ProductImage"
+        discountRate:
+          type: "integer"
+          format: "int32"
+        rating:
+          type: "number"
+          format: "float"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    Order:
+      type: "object"
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        fio:
+          type: "string"
+        shippingFirstname:
+          type: "string"
+        shippingLastname:
+          type: "string"
+        shippingAddress:
+          type: "string"
+        shippingOptionalAddress:
+          type: "string"
+        shippingCity:
+          type: "string"
+        shippingPostal:
+          type: "string"
+        orderNumber:
+          type: "integer"
+          format: "int64"
+        title:
+          type: "string"
+        orderDate:
+          type: "string"
+          format: "date-time"
+        count:
+          type: "integer"
+          format: "int32"
+        amount:
+          type: "number"
+          format: "double"
+        products:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Product"
+        status:
+          type: "string"
+          enum:
+            - "PENDING"
+            - "SHIPPED"
+            - "DELIVERED"
+            - "CANCELLED"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    User:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        email:
+          type: "string"
+        password:
+          type: "string"
+        roles:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Role"
+        orders:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Order"
+        address:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        phoneNumber:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    FavouriteList:
+      type: "object"
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        product:
+          $ref: "#/components/schemas/Product"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    HttpHeaders:
+      type: "object"
+      properties: { }
+    ResponseEntity:
+      type: "object"
+      properties:
+        headers:
+          $ref: "#/components/schemas/HttpHeaders"
+      required:
+        - "headers"
+    SellerDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        companyName:
+          type: "string"
+        username:
+          type: "string"
+        email:
+          type: "string"
+        address:
+          type: "string"
+        taxNumber:
+          type: "string"
+        income:
+          type: "number"
+          format: "double"
+    SellerRequest:
+      type: "object"
+      properties:
+        companyName:
+          type: "string"
+    Image:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        url:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    ProductDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        title:
+          type: "string"
+        price:
+          type: "number"
+          format: "float"
+        sale_price:
+          type: "number"
+          format: "float"
+        shippingCost:
+          type: "number"
+          format: "float"
+        description:
+          type: "string"
+        isAvailable:
+          type: "boolean"
+        vendor:
+          type: "string"
+        category:
+          $ref: "#/components/schemas/Category"
+        brand:
+          $ref: "#/components/schemas/Brand"
+        baseCategory:
+          type: "string"
+        discountRate:
+          type: "integer"
+          format: "int32"
+        rating:
+          type: "number"
+          format: "float"
+        features:
+          type: "string"
+        sku:
+          type: "string"
+        images:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Image"
+        thumbnail:
+          $ref: "#/components/schemas/Image"
+        createdAt:
+          type: "string"
+          format: "date-time"
+    MultipartFile:
+      type: "object"
+      properties: { }
+    ProductDeleteRequest:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        price:
+          type: "number"
+          format: "float"
+        imageFileList:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MultipartFile"
+        thumbnailFile:
+          $ref: "#/components/schemas/MultipartFile"
+        category:
+          $ref: "#/components/schemas/Category"
+        description:
+          type: "string"
+        quantity:
+          type: "integer"
+          format: "int32"
+        sku:
+          type: "string"
+        features:
+          type: "string"
+        brand:
+          $ref: "#/components/schemas/Brand"
+    CategoryDto:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        slug:
+          type: "string"
+        baseCategory:
+          type: "string"
+    Statistic:
+      type: "object"
+      properties:
+        userCount:
+          type: "integer"
+          format: "int64"
+        sellerCount:
+          type: "integer"
+          format: "int64"
+        productCount:
+          type: "integer"
+          format: "int64"
+        CategoryCount:
+          type: "integer"
+          format: "int64"
+    BlackListRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        companyName:
+          type: "string"
+    BlackList:
+      type: "object"
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        seller:
+          $ref: "#/components/schemas/Seller"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    BlackListDto:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        companyName:
+          type: "string"
+        sellerEmail:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+    UserDto:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        email:
+          type: "string"
+        address:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+    UserRequest:
+      type: "object"
+      properties:
+        phoneNumber:
+          type: "string"
+        address:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        email:
+          type: "string"
+    CollectionDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        slug:
+          type: "string"
+        description:
+          type: "string"
+        products:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ProductDto"
+    CollectionRequest:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        products:
+          type: "array"
+          items:
+            type: "integer"
+            format: "int64"
+    BrandsDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        slug:
+          type: "string"
+    BrandsProductsDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        slug:
+          type: "string"
+        products:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ProductDto"
+    OrderDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        orderNumber:
+          type: "integer"
+          format: "int64"
+        title:
+          type: "string"
+        orderDate:
+          type: "string"
+          format: "date-time"
+        count:
+          type: "integer"
+          format: "int32"
+        amount:
+          type: "integer"
+          format: "int64"
+        status:
+          type: "string"
+    OrderRequest:
+      type: "object"
+      properties:
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        address:
+          type: "string"
+        apartment:
+          type: "string"
+        city:
+          type: "string"
+        postalCode:
+          type: "string"
+        fio:
+          type: "string"
+        products:
+          type: "integer"
+          format: "int64"
+    ChatMessage:
+      type: "object"
+      properties:
+        role:
+          type: "string"
+        text:
+          type: "string"
+    AssistantRequest:
+      type: "object"
+      properties:
+        messages:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ChatMessage"
